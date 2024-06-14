@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -33,9 +34,11 @@ func (t *TwiplaWebsiteAPI) New(intpcID string, args NewWebsiteArgs) error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusNoContent {
-		return fmt.Errorf("can't create new website")
+		payload, _ := io.ReadAll(res.Body)
+		return fmt.Errorf("can't create new website. %s", string(payload))
 	}
 
 	return nil
@@ -52,9 +55,11 @@ func (t *TwiplaWebsiteAPI) List(pag PagArgs) (*[]Website, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("can't get intp websites")
+		payload, _ := io.ReadAll(res.Body)
+		return nil, fmt.Errorf("can't get intp websites. %s", string(payload))
 	}
 
 	return NewTwiplaJSON[[]Website](res.Body).Unmarshal()
@@ -71,9 +76,11 @@ func (t *TwiplaWebsiteAPI) GetByID(ID string) (*Website, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("can't get intp website")
+		payload, _ := io.ReadAll(res.Body)
+		return nil, fmt.Errorf("can't get intp website. %s", string(payload))
 	}
 
 	return NewTwiplaJSON[Website](res.Body).Unmarshal()

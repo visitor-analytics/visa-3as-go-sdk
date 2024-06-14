@@ -2,6 +2,7 @@ package sdk
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -39,9 +40,11 @@ func (t *TwiplaPackageAPI) List() (*[]Package, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("can't get intp packages")
+		payload, _ := io.ReadAll(res.Body)
+		return nil, fmt.Errorf("can't get intp packages. %s", string(payload))
 	}
 
 	return NewTwiplaJSON[[]Package](res.Body).Unmarshal()
@@ -58,9 +61,11 @@ func (t *TwiplaPackageAPI) GetByID(ID string) (*Package, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("can't get intp package")
+		payload, _ := io.ReadAll(res.Body)
+		return nil, fmt.Errorf("can't get intp package. %s", string(payload))
 	}
 
 	return NewTwiplaJSON[Package](res.Body).Unmarshal()

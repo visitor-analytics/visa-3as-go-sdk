@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 )
 
@@ -27,9 +28,11 @@ func (t *TwiplaSubscriptionAPI) Upgrade(args UpgradeArgs) error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusNoContent {
-		return fmt.Errorf("can't upgrade subscription")
+		payload, _ := io.ReadAll(res.Body)
+		return fmt.Errorf("can't upgrade subscription. %s", string(payload))
 	}
 
 	return nil
@@ -51,9 +54,11 @@ func (t *TwiplaSubscriptionAPI) Downgrade(args DowngradeArgs) error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusNoContent {
-		return fmt.Errorf("can't downgrade subscription")
+		payload, _ := io.ReadAll(res.Body)
+		return fmt.Errorf("can't downgrade subscription. %s", string(payload))
 	}
 
 	return nil
@@ -80,9 +85,11 @@ func (t *TwiplaSubscriptionAPI) Cancel(websiteExtID string) error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusNoContent {
-		return fmt.Errorf("can't cancel subscription")
+		payload, _ := io.ReadAll(res.Body)
+		return fmt.Errorf("can't cancel subscription. %s", string(payload))
 	}
 
 	return nil
@@ -109,9 +116,11 @@ func (t *TwiplaSubscriptionAPI) Resume(websiteExtID string) error {
 	if err != nil {
 		return err
 	}
+	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusNoContent {
-		return fmt.Errorf("can't resume subscription")
+		payload, _ := io.ReadAll(res.Body)
+		return fmt.Errorf("can't resume subscription. %s", string(payload))
 	}
 
 	return nil
