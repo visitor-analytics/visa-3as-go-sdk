@@ -63,6 +63,10 @@ func (t *TwiplaPackageAPI) GetByID(ID string) (*Package, error) {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode == http.StatusNotFound {
+		return nil, fmt.Errorf("not found")
+	}
+
 	if res.StatusCode != http.StatusOK {
 		payload, _ := io.ReadAll(res.Body)
 		return nil, fmt.Errorf("can't get intp package. %s", string(payload))

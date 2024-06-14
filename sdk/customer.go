@@ -72,6 +72,10 @@ func (t *TwiplaCustomerAPI) GetByID(ID string) (*Customer, error) {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode == http.StatusNotFound {
+		return nil, fmt.Errorf("not found")
+	}
+
 	if res.StatusCode != http.StatusOK {
 		payload, _ := io.ReadAll(res.Body)
 		return nil, fmt.Errorf("can't get intp customer. %s", string(payload))
