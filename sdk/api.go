@@ -25,7 +25,7 @@ func (t *TwiplaAPIClient) NewRequest(method, url string, body io.Reader) (*http.
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Content-Type", "application-json")
+	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", accessToken))
 
 	return req, nil
