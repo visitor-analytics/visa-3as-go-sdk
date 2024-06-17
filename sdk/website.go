@@ -36,7 +36,7 @@ func (t *TwiplaWebsiteAPI) New(intpcID string, args NewWebsiteArgs) error {
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusNoContent {
+	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
 		payload, _ := io.ReadAll(res.Body)
 		return fmt.Errorf("can't create new website. %s", string(payload))
 	}

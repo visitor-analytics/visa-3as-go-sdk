@@ -30,9 +30,9 @@ func (t *TwiplaCustomerAPI) New(args NewCustomerArgs) error {
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusNoContent {
+	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
 		payload, _ := io.ReadAll(res.Body)
-		return fmt.Errorf("can't create new customer. %s", string(payload))
+		return fmt.Errorf("can't create new customer. %d, %s", res.StatusCode, string(payload))
 	}
 
 	return nil
@@ -53,7 +53,7 @@ func (t *TwiplaCustomerAPI) List(pag PagArgs) (*[]Customer, error) {
 
 	if res.StatusCode != http.StatusOK {
 		payload, _ := io.ReadAll(res.Body)
-		return nil, fmt.Errorf("can't get intp customers. %s", string(payload))
+		return nil, fmt.Errorf("can't get intp customers. %d, %s", res.StatusCode, string(payload))
 	}
 
 	return NewTwiplaJSON[[]Customer](res.Body).Unmarshal()
@@ -78,7 +78,7 @@ func (t *TwiplaCustomerAPI) GetByID(ID string) (*Customer, error) {
 
 	if res.StatusCode != http.StatusOK {
 		payload, _ := io.ReadAll(res.Body)
-		return nil, fmt.Errorf("can't get intp customer. %s", string(payload))
+		return nil, fmt.Errorf("can't get intp customer. %d, %s", res.StatusCode, string(payload))
 	}
 
 	return NewTwiplaJSON[Customer](res.Body).Unmarshal()
