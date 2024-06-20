@@ -8,6 +8,7 @@ import (
 
 type NewPackageArgs struct {
 	Name     string
+	ExtID    *string
 	STPs     int
 	Price    float32
 	Period   TwiplaPeriod
@@ -16,6 +17,7 @@ type NewPackageArgs struct {
 
 type Package struct {
 	ID          string         `json:"id"`
+	ExtID       *string        `json:"externalId"`
 	Name        string         `json:"name"`
 	Price       float32        `json:"price"`
 	Currency    TwiplaCurrency `json:"currency"`
