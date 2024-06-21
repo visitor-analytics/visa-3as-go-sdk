@@ -21,7 +21,7 @@ type Package struct {
 	Name        string         `json:"name"`
 	Price       float32        `json:"price"`
 	Currency    TwiplaCurrency `json:"currency"`
-	Period      TwiplaPeriod   `json:"period"`
+	Period      string         `json:"period"`
 	Recommended bool           `json:"recommended"`
 	Touchpoints float64        `json:"touchpoints"`
 	CreatedAt   string         `json:"createdAt"`
