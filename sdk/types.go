@@ -20,13 +20,15 @@ type Customer struct {
 }
 
 type Website struct {
-	ID          string `json:"id"`
-	ExtID       string `json:"intpWebsiteId"`
-	PackageID   string `json:"packageId"`
-	PackageName string `json:"packageName"`
-	ResetAt     string `json:"stpResetAt"`
-	CreatedAt   string `json:"createdAt"`
-	ExpiresAt   string `json:"expiresAt"`
+	ID                     string  `json:"id"`
+	ExtID                  string  `json:"intpWebsiteId"`
+	PackageID              string  `json:"packageId"`
+	PackageName            string  `json:"packageName"`
+	ResetAt                string  `json:"stpResetAt"`
+	CreatedAt              string  `json:"createdAt"`
+	ExpiresAt              string  `json:"expiresAt"`
+	TrackingCode           *string `json:"visaTrackingCode,omitempty"`
+	TrackingCodeMaxPrivacy *string `json:"visaMaxPrivacyModeTrackingCode,omitempty"`
 }
 
 type Subscription struct {
