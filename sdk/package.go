@@ -1,30 +1,32 @@
 package sdk
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 )
 
 type NewPackageArgs struct {
-	Name     string
-	ExtID    *string
-	STPs     int
-	Price    float32
-	Period   TwiplaPeriod
-	Currency TwiplaCurrency
+	Name     string  `json:"name"`
+	ExtID    *string `json:"externalId,omitempty"`
+	STPs     int     `json:"touchpoints"`
+	Price    float32 `json:"price"`
+	Period   string  `json:"period"`
+	Currency string  `json:"currency"`
 }
 
 type Package struct {
-	ID          string         `json:"id"`
-	ExtID       *string        `json:"externalId"`
-	Name        string         `json:"name"`
-	Price       float32        `json:"price"`
-	Currency    TwiplaCurrency `json:"currency"`
-	Period      string         `json:"period"`
-	Recommended bool           `json:"recommended"`
-	Touchpoints float64        `json:"touchpoints"`
-	CreatedAt   string         `json:"createdAt"`
+	ID          string  `json:"id"`
+	ExtID       *string `json:"externalId"`
+	Name        string  `json:"name"`
+	Price       float32 `json:"price"`
+	Currency    string  `json:"currency"`
+	Period      string  `json:"period"`
+	Recommended bool    `json:"recommended"`
+	Touchpoints float64 `json:"touchpoints"`
+	CreatedAt   string  `json:"createdAt"`
 }
 
 type TwiplaPackageAPI struct {
@@ -75,6 +77,32 @@ func (t *TwiplaPackageAPI) GetByID(ID string) (*Package, error) {
 	}
 
 	return NewTwiplaJSON[Package](res.Body).Unmarshal()
+}
+
+func (t *TwiplaPackageAPI) Create(args NewPackageArgs) error {
+	jsonData, err := json.Marshal(args)
+	if err != nil {
+		return err
+	}
+
+	url := t.client.apiGateway + "/v2/3as/packages"
+	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
+	if err != nil {
+		return err
+	}
+
+	res, err := http.DefaultClient.Do(r)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated && res.StatusCode != http.StatusNoContent {
+		payload, _ := io.ReadAll(res.Body)
+		return fmt.Errorf("can't create new package. %d, %s", res.StatusCode, string(payload))
+	}
+
+	return nil
 }
 
 func NewTwiplaPackageAPI(
