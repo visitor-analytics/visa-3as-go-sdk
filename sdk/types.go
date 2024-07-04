@@ -51,3 +51,11 @@ type DowngradeArgs struct {
 	WebsiteExtID string `json:"intpWebsiteId"`
 	PackageID    string `json:"packageId"`
 }
+
+type APIErr struct {
+	Status  int    `json:"status,omitempty"`
+	Message string `json:"message,omitempty"`
+	Title   string `json:"title,omitempty"`
+	Time    string `json:"time,omitempty"`
+	Code    int    `json:"code,omitempty"`
+}

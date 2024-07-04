@@ -78,12 +78,15 @@ func (t *TwiplaWebsiteAPI) GetByID(ID string) (*Website, error) {
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode == http.StatusNotFound {
-		return nil, fmt.Errorf("not found")
-	}
-
 	if res.StatusCode != http.StatusOK {
 		payload, _ := io.ReadAll(res.Body)
+		apiErr, err := NewTwiplaJSON[APIErr](res.Body).Unmarshal()
+		if err != nil {
+			return nil, fmt.Errorf("can't unmarshal api err: %s", string(payload))
+		}
+		if apiErr.Code == 1004 {
+			return nil, fmt.Errorf("not found")
+		}
 		return nil, fmt.Errorf("can't get intp website. %s", string(payload))
 	}
 
