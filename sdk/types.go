@@ -29,6 +29,10 @@ type Website struct {
 	ExpiresAt              string  `json:"expiresAt"`
 	TrackingCode           *string `json:"visaTrackingCode,omitempty"`
 	TrackingCodeMaxPrivacy *string `json:"visaMaxPrivacyModeTrackingCode,omitempty"`
+	LastPackageChangeAt    *string `json:"lastPackageChangeAt"`
+	PDPackageID            *string `json:"plannedDowngradePackageId"`
+	PDPackageName          *string `json:"plannedDowngradePackageName"`
+	PDPackageCycle         *string `json:"plannedDowngradeBillingInterval"`
 }
 
 type Subscription struct {
