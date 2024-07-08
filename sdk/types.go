@@ -22,6 +22,7 @@ type Customer struct {
 type Website struct {
 	ID                     string  `json:"id"`
 	ExtID                  string  `json:"intpWebsiteId"`
+	Status                 string  `json:"status"`
 	PackageID              string  `json:"packageId"`
 	PackageName            string  `json:"packageName"`
 	ResetAt                string  `json:"stpResetAt"`
