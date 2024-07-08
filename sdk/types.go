@@ -48,6 +48,12 @@ type UpgradeArgs struct {
 	ProRate      bool   `json:"proRate"`
 }
 
+type ReactivateArgs struct {
+	WebsiteExtID string `json:"intpWebsiteId"`
+	PackageID    string `json:"packageId"`
+	Trial        bool   `json:"trial"`
+}
+
 type DowngradeArgs struct {
 	WebsiteExtID string `json:"intpWebsiteId"`
 	PackageID    string `json:"packageId"`

@@ -157,6 +157,32 @@ func (t *TwiplaSubscriptionAPI) Deactivate(websiteExtID string) error {
 	return nil
 }
 
+func (t *TwiplaSubscriptionAPI) Reactivate(args ReactivateArgs) error {
+	jsonData, err := json.Marshal(args)
+	if err != nil {
+		return err
+	}
+
+	url := t.client.apiGateway + "/v2/3as/notifications/subscriptions/reactivate"
+	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
+	if err != nil {
+		return err
+	}
+
+	res, err := http.DefaultClient.Do(r)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusNoContent && res.StatusCode != http.StatusCreated {
+		payload, _ := io.ReadAll(res.Body)
+		return fmt.Errorf("can't reactivate subscription. %s", string(payload))
+	}
+
+	return nil
+}
+
 func NewTwiplaSubscriptionAPI(
 	twiplaAPIClient *TwiplaAPIClient,
 ) *TwiplaSubscriptionAPI {
