@@ -2,6 +2,7 @@ package sdk
 
 import (
 	"fmt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type TwiplaEnv string
@@ -30,6 +31,7 @@ type TwiplaArgs struct {
 }
 
 type Twipla struct {
+	Auth         *AuthAPI
 	Package      *TwiplaPackageAPI
 	Website      *TwiplaWebsiteAPI
 	Customer     *TwiplaCustomerAPI
@@ -50,14 +52,17 @@ func NewTwipla(args TwiplaArgs) (*Twipla, error) {
 		return nil, fmt.Errorf("unsupported env: %s", args.Env)
 	}
 
-	twiplaJWTIssuer, err := NewTwiplaJWTIssuer(args.Intp.ID, args.Intp.PKey)
+	pkey, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(args.Intp.PKey))
 	if err != nil {
 		return nil, err
 	}
 
-	twiplaAPIClient := NewTwiplaAPIClient(apiGateway, twiplaJWTIssuer)
+	authAPI := NewAuthAPI(args.Intp.ID, &RS256{PrivateKey: pkey})
+
+	twiplaAPIClient := NewTwiplaAPIClient(apiGateway, authAPI)
 
 	return &Twipla{
+		Auth:         authAPI,
 		Package:      NewTwiplaPackageAPI(twiplaAPIClient),
 		Website:      NewTwiplaWebsiteAPI(twiplaAPIClient),
 		Customer:     NewTwiplaCustomerAPI(twiplaAPIClient),

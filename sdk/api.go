@@ -13,7 +13,7 @@ type PagArgs struct {
 
 type TwiplaAPIClient struct {
 	apiGateway string
-	*TwiplaJWTIssuer
+	*AuthAPI
 }
 
 func (t *TwiplaAPIClient) NewRequest(method, url string, body io.Reader) (*http.Request, error) {
@@ -21,7 +21,7 @@ func (t *TwiplaAPIClient) NewRequest(method, url string, body io.Reader) (*http.
 	if err != nil {
 		return nil, err
 	}
-	accessToken, err := t.TwiplaJWTIssuer.New()
+	accessToken, err := t.AuthAPI.NewINTPToken()
 	if err != nil {
 		return nil, err
 	}
@@ -31,6 +31,6 @@ func (t *TwiplaAPIClient) NewRequest(method, url string, body io.Reader) (*http.
 	return req, nil
 }
 
-func NewTwiplaAPIClient(apiGateway string, jwt *TwiplaJWTIssuer) *TwiplaAPIClient {
-	return &TwiplaAPIClient{apiGateway: apiGateway, TwiplaJWTIssuer: jwt}
+func NewTwiplaAPIClient(apiGateway string, jwt *AuthAPI) *TwiplaAPIClient {
+	return &TwiplaAPIClient{apiGateway: apiGateway, AuthAPI: jwt}
 }

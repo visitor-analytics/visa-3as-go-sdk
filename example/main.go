@@ -73,7 +73,7 @@ func main() {
 	//}
 	//fmt.Println(p)
 
-	//err := twipla.Customer.New(sdk.NewCustomerArgs{
+	//err := twipla.Customer.NewINTPToken(sdk.NewCustomerArgs{
 	//	ExtID: "",
 	//	Email: "",
 	//	Website: sdk.NewWebsiteArgs{
@@ -86,7 +86,7 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	//err = twipla.Website.New("abc", sdk.NewWebsiteArgs{
+	//err = twipla.Website.NewINTPToken("abc", sdk.NewWebsiteArgs{
 	//	ExtID:     "",
 	//	Domain:    "",
 	//	PackageID: "",
@@ -95,7 +95,7 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	//err = twipla.Website.New("abc", sdk.NewWebsiteArgs{
+	//err = twipla.Website.NewINTPToken("abc", sdk.NewWebsiteArgs{
 	//	ExtID:     "",
 	//	Domain:    "",
 	//	PackageID: "",
