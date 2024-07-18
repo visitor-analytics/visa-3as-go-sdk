@@ -15,6 +15,7 @@ type NewCustomerArgs struct {
 type Customer struct {
 	ID        string `json:"id"`
 	ExtID     string `json:"intpCustomerId"`
+	VisaID    string `json:"visaId"`
 	Email     string `json:"email"`
 	CreatedAt string `json:"createdAt"`
 }
@@ -28,8 +29,8 @@ type Website struct {
 	ResetAt                string  `json:"stpResetAt"`
 	CreatedAt              string  `json:"createdAt"`
 	ExpiresAt              string  `json:"expiresAt"`
-	TrackingCode           *string `json:"visaTrackingCode,omitempty"`
-	TrackingCodeMaxPrivacy *string `json:"visaMaxPrivacyModeTrackingCode,omitempty"`
+	TrackingCode           *string `json:"visaTrackingCode"`
+	TrackingCodeMaxPrivacy *string `json:"visaMaxPrivacyModeTrackingCode"`
 	LastPackageChangeAt    *string `json:"lastPackageChangeAt"`
 	PDPackageID            *string `json:"plannedDowngradePackageId"`
 	PDPackageName          *string `json:"plannedDowngradePackageName"`
