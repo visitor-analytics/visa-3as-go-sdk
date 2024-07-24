@@ -11,12 +11,33 @@ type PagArgs struct {
 	PageSize int
 }
 
-type TwiplaAPIClient struct {
+type TwiplaSSRApiClient struct {
+	apiGateway string
+	secret     string
+}
+
+func (t *TwiplaSSRApiClient) NewRequest(method, url string, body io.Reader) (*http.Request, error) {
+	req, err := http.NewRequest(method, url, body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", fmt.Sprintf("ApiKey %s", t.secret))
+
+	return req, nil
+}
+
+func NewTwiplaSSRApiClient(apiGateway, secret string) *TwiplaSSRApiClient {
+	return &TwiplaSSRApiClient{apiGateway: apiGateway, secret: secret}
+}
+
+type TwiplaApiClient struct {
 	apiGateway string
 	*AuthAPI
 }
 
-func (t *TwiplaAPIClient) NewRequest(method, url string, body io.Reader) (*http.Request, error) {
+func (t *TwiplaApiClient) NewRequest(method, url string, body io.Reader) (*http.Request, error) {
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {
 		return nil, err
@@ -31,6 +52,6 @@ func (t *TwiplaAPIClient) NewRequest(method, url string, body io.Reader) (*http.
 	return req, nil
 }
 
-func NewTwiplaAPIClient(apiGateway string, jwt *AuthAPI) *TwiplaAPIClient {
-	return &TwiplaAPIClient{apiGateway: apiGateway, AuthAPI: jwt}
+func NewTwiplaAPIClient(apiGateway string, jwt *AuthAPI) *TwiplaApiClient {
+	return &TwiplaApiClient{apiGateway: apiGateway, AuthAPI: jwt}
 }

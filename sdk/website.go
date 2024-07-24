@@ -9,10 +9,11 @@ import (
 )
 
 type TwiplaWebsiteAPI struct {
-	client *TwiplaAPIClient
+	client              *TwiplaApiClient
+	twiplaSSRWebsiteAPI *TwiplaSSRWebsiteAPI
 }
 
-func (t *TwiplaWebsiteAPI) New(intpcID string, args NewWebsiteArgs) error {
+func (t *TwiplaWebsiteAPI) newTwiplaWebsite(intpcID string, args NewWebsiteArgs) (*Website, error) {
 	jsonData, err := json.Marshal(struct {
 		NewWebsiteArgs
 		IntpcID string `json:"intpCustomerId"`
@@ -21,24 +22,41 @@ func (t *TwiplaWebsiteAPI) New(intpcID string, args NewWebsiteArgs) error {
 		NewWebsiteArgs: args,
 	})
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	url := t.client.apiGateway + "/v2/3as/websites"
 	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	res, err := http.DefaultClient.Do(r)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
 		payload, _ := io.ReadAll(res.Body)
-		return fmt.Errorf("can't create new website. %s", string(payload))
+		return nil, fmt.Errorf("can't create new website. %s", string(payload))
+	}
+
+	return NewTwiplaJSON[Website](res.Body).Unmarshal()
+}
+
+func (t *TwiplaWebsiteAPI) New(intpcID string, args NewWebsiteArgs) error {
+	twiplaWebsite, err := t.newTwiplaWebsite(intpcID, args)
+	if err != nil {
+		return err
+	}
+
+	if t.twiplaSSRWebsiteAPI != nil {
+		return t.twiplaSSRWebsiteAPI.New(
+			NewSSRWebsiteArgs{
+				ExtID: twiplaWebsite.ID,
+				Name:  twiplaWebsite.Domain,
+			})
 	}
 
 	return nil
@@ -89,6 +107,12 @@ func (t *TwiplaWebsiteAPI) GetByID(ID string) (*Website, error) {
 	return NewTwiplaJSON[Website](res.Body).Unmarshal()
 }
 
-func NewTwiplaWebsiteAPI(client *TwiplaAPIClient) *TwiplaWebsiteAPI {
-	return &TwiplaWebsiteAPI{client: client}
+func NewTwiplaWebsiteAPI(
+	client *TwiplaApiClient,
+	ssrAPI *TwiplaSSRWebsiteAPI,
+) *TwiplaWebsiteAPI {
+	return &TwiplaWebsiteAPI{
+		client:              client,
+		twiplaSSRWebsiteAPI: ssrAPI,
+	}
 }

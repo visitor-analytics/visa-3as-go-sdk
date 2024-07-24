@@ -30,7 +30,7 @@ type Package struct {
 }
 
 type TwiplaPackageAPI struct {
-	client *TwiplaAPIClient
+	client *TwiplaApiClient
 }
 
 func (t *TwiplaPackageAPI) List() (*[]Package, error) {
@@ -106,7 +106,7 @@ func (t *TwiplaPackageAPI) Create(args NewPackageArgs) error {
 }
 
 func NewTwiplaPackageAPI(
-	twiplaAPIClient *TwiplaAPIClient,
+	twiplaAPIClient *TwiplaApiClient,
 ) *TwiplaPackageAPI {
 	return &TwiplaPackageAPI{
 		client: twiplaAPIClient,

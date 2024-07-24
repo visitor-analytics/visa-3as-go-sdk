@@ -9,7 +9,7 @@ import (
 )
 
 type TwiplaSubscriptionAPI struct {
-	client *TwiplaAPIClient
+	client *TwiplaApiClient
 }
 
 func (t *TwiplaSubscriptionAPI) Upgrade(args UpgradeArgs) error {
@@ -184,7 +184,7 @@ func (t *TwiplaSubscriptionAPI) Reactivate(args ReactivateArgs) error {
 }
 
 func NewTwiplaSubscriptionAPI(
-	twiplaAPIClient *TwiplaAPIClient,
+	twiplaAPIClient *TwiplaApiClient,
 ) *TwiplaSubscriptionAPI {
 	return &TwiplaSubscriptionAPI{
 		client: twiplaAPIClient,

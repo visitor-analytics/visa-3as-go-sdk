@@ -6,6 +6,28 @@ type NewWebsiteArgs struct {
 	PackageID string `json:"packageId"`
 }
 
+type NewSSRWebsiteArgs struct {
+	ExtID string `json:"externalWebsiteId"`
+	Name  string `json:"name"`
+}
+
+type SSRWebsiteSettings struct {
+	Paused          bool `json:"paused"`
+	AnyPage         bool `json:"anyPage"`
+	ClickAndScroll  bool `json:"clickAndScroll"`
+	TextObfuscation bool `json:"textObfuscation"`
+
+	Pages        []string        `json:"pages"`
+	URLPatterns  []SSRUrlPattern `json:"UrlPatterns"`
+	MinDuration  int64           `json:"minDuration"`
+	DynamicPages []string        `json:"dynamicPages"`
+}
+
+type SSRUrlPattern struct {
+	URL  string `json:"url"`
+	Type string `json:"type"`
+}
+
 type NewCustomerArgs struct {
 	ExtID   string         `json:"intpCustomerId"`
 	Email   string         `json:"email"`
@@ -24,6 +46,7 @@ type Website struct {
 	ID                     string  `json:"id"`
 	ExtID                  string  `json:"intpWebsiteId"`
 	Status                 string  `json:"status"`
+	Domain                 string  `json:"domain"`
 	PackageID              string  `json:"packageId"`
 	PackageName            string  `json:"packageName"`
 	ResetAt                string  `json:"stpResetAt"`

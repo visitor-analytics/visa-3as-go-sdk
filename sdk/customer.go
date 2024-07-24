@@ -9,7 +9,7 @@ import (
 )
 
 type TwiplaCustomerAPI struct {
-	client *TwiplaAPIClient
+	client *TwiplaApiClient
 }
 
 func (t *TwiplaCustomerAPI) New(args NewCustomerArgs) error {
@@ -84,6 +84,6 @@ func (t *TwiplaCustomerAPI) GetByID(ID string) (*Customer, error) {
 	return NewTwiplaJSON[Customer](res.Body).Unmarshal()
 }
 
-func NewTwiplaCustomerAPI(client *TwiplaAPIClient) *TwiplaCustomerAPI {
+func NewTwiplaCustomerAPI(client *TwiplaApiClient) *TwiplaCustomerAPI {
 	return &TwiplaCustomerAPI{client: client}
 }

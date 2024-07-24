@@ -25,9 +25,14 @@ type Intp struct {
 	PKey string
 }
 
+type SSR struct {
+	Secret string
+}
+
 type TwiplaArgs struct {
 	Intp Intp
 	Env  TwiplaEnv
+	Ssr  *SSR
 }
 
 type Twipla struct {
@@ -36,18 +41,32 @@ type Twipla struct {
 	Website      *TwiplaWebsiteAPI
 	Customer     *TwiplaCustomerAPI
 	Subscription *TwiplaSubscriptionAPI
+	SSRWebsite   *TwiplaSSRWebsiteAPI
 }
 
 func NewTwipla(args TwiplaArgs) (*Twipla, error) {
 	var apiGateway string
+	var apiGatewaySSR string
 
 	switch args.Env {
 	case TwiplaDevelop:
-		apiGateway = "https://api-gateway.va-endpoint.com"
+		{
+			apiGateway = "https://api-gateway.va-endpoint.com"
+			apiGatewaySSR = "https://api-develop.session-replays.io"
+		}
+
 	case TwiplaStage:
-		apiGateway = "https://stage-api-gateway.va-endpoint.com"
+		{
+			apiGateway = "https://stage-api-gateway.va-endpoint.com"
+			apiGatewaySSR = "https://api-stage.session-replays.io"
+		}
+
 	case TwiplaProduction:
-		apiGateway = "https://api-gateway.visitor-analytics.io"
+		{
+			apiGateway = "https://api-gateway.visitor-analytics.io"
+			apiGatewaySSR = "https://api.session-replays.io"
+		}
+
 	default:
 		return nil, fmt.Errorf("unsupported env: %s", args.Env)
 	}
@@ -61,11 +80,18 @@ func NewTwipla(args TwiplaArgs) (*Twipla, error) {
 
 	twiplaAPIClient := NewTwiplaAPIClient(apiGateway, authAPI)
 
+	var twiplaSSRWebsiteAPI *TwiplaSSRWebsiteAPI
+
+	if args.Ssr != nil {
+		twiplaSSRWebsiteAPI = NewTwiplaSSRWebsiteAPI(NewTwiplaSSRApiClient(apiGatewaySSR, args.Ssr.Secret))
+	}
+
 	return &Twipla{
 		Auth:         authAPI,
 		Package:      NewTwiplaPackageAPI(twiplaAPIClient),
-		Website:      NewTwiplaWebsiteAPI(twiplaAPIClient),
+		Website:      NewTwiplaWebsiteAPI(twiplaAPIClient, twiplaSSRWebsiteAPI),
 		Customer:     NewTwiplaCustomerAPI(twiplaAPIClient),
 		Subscription: NewTwiplaSubscriptionAPI(twiplaAPIClient),
+		SSRWebsite:   twiplaSSRWebsiteAPI,
 	}, nil
 }
