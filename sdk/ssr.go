@@ -29,7 +29,7 @@ func (t *TwiplaSSRWebsiteAPI) New(websiteID string, visaCustomerID string) error
 		return err
 	}
 
-	url := t.client.apiGateway + fmt.Sprintf("api/v2/aaas/users/%s/websites/%s/ssr-settings", visaCustomerID, websiteID)
+	url := t.client.apiGateway + fmt.Sprintf("/api/v2/aaas/users/%s/websites/%s/ssr-settings", visaCustomerID, websiteID)
 	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
