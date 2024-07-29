@@ -45,6 +45,8 @@ type Customer struct {
 type Website struct {
 	ID                     string  `json:"id"`
 	ExtID                  string  `json:"intpWebsiteId"`
+	IntpCustomerID         string  `json:"intpCustomerId"`
+	VisaCustomerID         string  `json:"visaCustomerId"`
 	Status                 string  `json:"status"`
 	Domain                 string  `json:"domain"`
 	PackageID              string  `json:"packageId"`

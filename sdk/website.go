@@ -52,7 +52,7 @@ func (t *TwiplaWebsiteAPI) New(intpcID string, args NewWebsiteArgs) error {
 	}
 
 	if t.twiplaSSRWebsiteAPI != nil {
-		return t.twiplaSSRWebsiteAPI.New(twiplaWebsite.ID)
+		return t.twiplaSSRWebsiteAPI.New(twiplaWebsite.ID, twiplaWebsite.VisaCustomerID)
 	}
 
 	return nil
