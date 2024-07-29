@@ -52,11 +52,7 @@ func (t *TwiplaWebsiteAPI) New(intpcID string, args NewWebsiteArgs) error {
 	}
 
 	if t.twiplaSSRWebsiteAPI != nil {
-		return t.twiplaSSRWebsiteAPI.New(
-			NewSSRWebsiteArgs{
-				ExtID: twiplaWebsite.ID,
-				Name:  twiplaWebsite.Domain,
-			})
+		return t.twiplaSSRWebsiteAPI.New(twiplaWebsite.ID)
 	}
 
 	return nil

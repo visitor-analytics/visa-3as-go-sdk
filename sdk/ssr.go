@@ -16,29 +16,20 @@ type TwiplaSSRWebsiteAPI struct {
 	client *TwiplaSSRApiClient
 }
 
-func (t *TwiplaSSRWebsiteAPI) New(args NewSSRWebsiteArgs) error {
-	jsonData, err := json.Marshal(struct {
-		ExtID    string             `json:"externalWebsiteId"`
-		Name     string             `json:"name"`
-		Platform string             `json:"platform"`
-		Settings SSRWebsiteSettings `json:"recordingsSettings"`
-	}{
-		ExtID:    args.ExtID,
-		Name:     args.Name,
-		Platform: "AAAS",
-		Settings: SSRWebsiteSettings{
+func (t *TwiplaSSRWebsiteAPI) New(websiteID string) error {
+	jsonData, err := json.Marshal(
+		SSRWebsiteSettings{
 			Paused:          false,
 			AnyPage:         true,
 			ClickAndScroll:  false,
 			TextObfuscation: false,
-			MinDuration:     0,
-		},
-	})
+			MinDuration:     -1,
+		})
 	if err != nil {
 		return err
 	}
 
-	url := t.client.apiGateway + "/api/websites"
+	url := t.client.apiGateway + fmt.Sprintf("/api/websites/%s/ssr-settings", websiteID)
 	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err

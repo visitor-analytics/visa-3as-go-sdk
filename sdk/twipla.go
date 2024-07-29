@@ -52,19 +52,19 @@ func NewTwipla(args TwiplaArgs) (*Twipla, error) {
 	case TwiplaDevelop:
 		{
 			apiGateway = "https://api-gateway.va-endpoint.com"
-			apiGatewaySSR = "https://api-develop.session-replays.io"
+			apiGatewaySSR = "https://dev-api.va-endpoint.com"
 		}
 
 	case TwiplaStage:
 		{
 			apiGateway = "https://stage-api-gateway.va-endpoint.com"
-			apiGatewaySSR = "https://api-stage.session-replays.io"
+			apiGatewaySSR = "https://stage-api.va-endpoint.com"
 		}
 
 	case TwiplaProduction:
 		{
 			apiGateway = "https://api-gateway.visitor-analytics.io"
-			apiGatewaySSR = "https://api.session-replays.io"
+			apiGatewaySSR = "https://lb-api.visitor-analytics.io"
 		}
 
 	default:

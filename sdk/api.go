@@ -23,7 +23,7 @@ func (t *TwiplaSSRApiClient) NewRequest(method, url string, body io.Reader) (*ht
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", fmt.Sprintf("ApiKey %s", t.secret))
+	req.Header.Set("X-AUTH-TOKEN", t.secret)
 
 	return req, nil
 }
