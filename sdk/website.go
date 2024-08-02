@@ -104,7 +104,7 @@ func (t *TwiplaWebsiteAPI) GetByID(ID string) (*Website, error) {
 }
 
 func (t *TwiplaWebsiteAPI) GetByIntID(ID string) (*Website, error) {
-	url := t.client.apiGateway + "/v2/3as/websites/internal/" + ID
+	url := t.client.apiGateway + "/v2/3as/internal/websites/" + ID
 	r, err := t.client.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
@@ -118,7 +118,7 @@ func (t *TwiplaWebsiteAPI) GetByIntID(ID string) (*Website, error) {
 
 	if res.StatusCode != http.StatusOK {
 		if res.StatusCode == http.StatusNotFound {
-			return nil, fmt.Errorf("not found")
+			return nil, fmt.Errorf("can't get intp website. not found")
 		}
 		payload, _ := io.ReadAll(res.Body)
 		return nil, fmt.Errorf("can't get intp website. %s", string(payload))
