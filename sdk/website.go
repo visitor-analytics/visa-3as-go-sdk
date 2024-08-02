@@ -103,6 +103,30 @@ func (t *TwiplaWebsiteAPI) GetByID(ID string) (*Website, error) {
 	return NewTwiplaJSON[Website](res.Body).Unmarshal()
 }
 
+func (t *TwiplaWebsiteAPI) GetByIntID(ID string) (*Website, error) {
+	url := t.client.apiGateway + "/v2/3as/websites/internal/" + ID
+	r, err := t.client.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res, err := http.DefaultClient.Do(r)
+	if err != nil {
+		return nil, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		if res.StatusCode == http.StatusNotFound {
+			return nil, fmt.Errorf("not found")
+		}
+		payload, _ := io.ReadAll(res.Body)
+		return nil, fmt.Errorf("can't get intp website. %s", string(payload))
+	}
+
+	return NewTwiplaJSON[Website](res.Body).Unmarshal()
+}
+
 func NewTwiplaWebsiteAPI(
 	client *TwiplaApiClient,
 	ssrAPI *TwiplaSSRWebsiteAPI,
