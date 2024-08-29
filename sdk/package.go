@@ -105,7 +105,7 @@ func (t *TwiplaPackageAPI) Create(args NewPackageArgs) error {
 	return nil
 }
 
-func NewTwiplaPackageAPI(
+func NewTwiplaIntpPackageAPI(
 	twiplaAPIClient *TwiplaApiClient,
 ) *TwiplaPackageAPI {
 	return &TwiplaPackageAPI{

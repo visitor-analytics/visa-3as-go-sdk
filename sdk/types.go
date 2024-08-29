@@ -28,13 +28,13 @@ type SSRUrlPattern struct {
 	Type string `json:"type"`
 }
 
-type NewCustomerArgs struct {
+type NewIntpcArgs struct {
 	ExtID   string         `json:"intpCustomerId"`
 	Email   string         `json:"email"`
 	Website NewWebsiteArgs `json:"website"`
 }
 
-type Customer struct {
+type Intpc struct {
 	ID        string `json:"id"`
 	ExtID     string `json:"intpCustomerId"`
 	VisaID    string `json:"visaId"`

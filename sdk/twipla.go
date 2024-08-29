@@ -9,13 +9,6 @@ type TwiplaEnv string
 type TwiplaCurrency string
 type TwiplaPeriod string
 
-const Monthly TwiplaPeriod = "monthly"
-const Yearly TwiplaPeriod = "yearly"
-
-const EUR TwiplaCurrency = "EUR"
-const USD TwiplaCurrency = "USD"
-const RON TwiplaCurrency = "RON"
-
 const TwiplaDevelop TwiplaEnv = "dev"
 const TwiplaStage TwiplaEnv = "stage"
 const TwiplaProduction TwiplaEnv = "production"
@@ -37,11 +30,10 @@ type TwiplaArgs struct {
 
 type Twipla struct {
 	Auth         *AuthAPI
-	Package      *TwiplaPackageAPI
+	Intpc        *TwiplaIntpcAPI
 	Website      *TwiplaWebsiteAPI
-	Customer     *TwiplaCustomerAPI
+	Package      *TwiplaPackageAPI
 	Subscription *TwiplaSubscriptionAPI
-	SSRWebsite   *TwiplaSSRWebsiteAPI
 }
 
 func NewTwipla(args TwiplaArgs) (*Twipla, error) {
@@ -71,27 +63,28 @@ func NewTwipla(args TwiplaArgs) (*Twipla, error) {
 		return nil, fmt.Errorf("unsupported env: %s", args.Env)
 	}
 
+	var twiplaSSRWebsiteAPI *TwiplaSSRWebsiteAPI
+	if args.Ssr != nil {
+		twiplaSSRWebsiteAPI = NewTwiplaSSRWebsiteAPI(NewTwiplaSSRApiClient(apiGatewaySSR, args.Ssr.Secret))
+	}
+
 	pkey, err := jwt.ParseRSAPrivateKeyFromPEM([]byte(args.Intp.PKey))
 	if err != nil {
 		return nil, err
 	}
 
 	authAPI := NewAuthAPI(args.Intp.ID, &RS256{PrivateKey: pkey})
-
 	twiplaAPIClient := NewTwiplaAPIClient(apiGateway, authAPI)
-
-	var twiplaSSRWebsiteAPI *TwiplaSSRWebsiteAPI
-
-	if args.Ssr != nil {
-		twiplaSSRWebsiteAPI = NewTwiplaSSRWebsiteAPI(NewTwiplaSSRApiClient(apiGatewaySSR, args.Ssr.Secret))
-	}
+	websiteSubscriptionAPI := NewTwiplaSubscriptionAPI(twiplaAPIClient)
+	intpPackageAPI := NewTwiplaIntpPackageAPI(twiplaAPIClient)
+	websiteAPI := NewTwiplaWebsiteAPI(twiplaAPIClient, twiplaSSRWebsiteAPI)
+	intpcAPI := NewTwiplaIntpcAPI(twiplaAPIClient, websiteAPI, twiplaSSRWebsiteAPI)
 
 	return &Twipla{
 		Auth:         authAPI,
-		Package:      NewTwiplaPackageAPI(twiplaAPIClient),
-		Website:      NewTwiplaWebsiteAPI(twiplaAPIClient, twiplaSSRWebsiteAPI),
-		Customer:     NewTwiplaCustomerAPI(twiplaAPIClient),
-		Subscription: NewTwiplaSubscriptionAPI(twiplaAPIClient),
-		SSRWebsite:   twiplaSSRWebsiteAPI,
+		Intpc:        intpcAPI,
+		Website:      websiteAPI,
+		Package:      intpPackageAPI,
+		Subscription: websiteSubscriptionAPI,
 	}, nil
 }

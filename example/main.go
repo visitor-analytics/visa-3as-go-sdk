@@ -73,7 +73,7 @@ func main() {
 	}
 	fmt.Println(*p.TrackingCodeMaxPrivacy, *p.TrackingCode, p.PackageID)
 
-	//c, err := twipla.Customer.List(sdk.PagArgs{
+	//c, err := twipla.Intpc.List(sdk.PagArgs{
 	//	Page:     0,
 	//	PageSize: 10,
 	//})
@@ -91,7 +91,7 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	//p, err := twipla.Customer.List(sdk.PagArgs{
+	//p, err := twipla.Intpc.List(sdk.PagArgs{
 	//	Page:     0,
 	//	PageSize: 10,
 	//})
@@ -100,13 +100,13 @@ func main() {
 	//}
 	//fmt.Println(p)
 
-	//p, err := twipla.Customer.GetByID("customer-1")
+	//p, err := twipla.Intpc.GetByID("customer-1")
 	//if err != nil {
 	//	log.Fatal(err)
 	//}
 	//fmt.Println(p)
 
-	//err := twipla.Customer.NewINTPToken(sdk.NewCustomerArgs{
+	//err := twipla.Intpc.NewINTPToken(sdk.NewIntpcArgs{
 	//	ExtID: "",
 	//	Email: "",
 	//	Website: sdk.NewWebsiteArgs{
