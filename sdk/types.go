@@ -45,6 +45,7 @@ type Intpc struct {
 type Website struct {
 	ID                     string  `json:"id"`
 	ExtID                  string  `json:"intpWebsiteId"`
+	IntpID                 string  `json:"intpId"`
 	IntpCustomerID         string  `json:"intpCustomerId"`
 	VisaCustomerID         string  `json:"visaCustomerId"`
 	Status                 string  `json:"status"`
