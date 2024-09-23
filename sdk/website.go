@@ -93,11 +93,8 @@ func (t *TwiplaWebsiteAPI) GetByID(ID string) (*Website, error) {
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		if res.StatusCode == http.StatusNotFound {
-			return nil, fmt.Errorf("not found")
-		}
 		payload, _ := io.ReadAll(res.Body)
-		return nil, fmt.Errorf("can't get intp website. %s", string(payload))
+		return nil, fmt.Errorf("status code: %d; payload: %s", res.StatusCode, string(payload))
 	}
 
 	return NewTwiplaJSON[Website](res.Body).Unmarshal()
