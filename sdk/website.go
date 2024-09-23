@@ -39,7 +39,7 @@ func (t *TwiplaWebsiteAPI) newTwiplaWebsite(intpcID string, args NewWebsiteArgs)
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
 		payload, _ := io.ReadAll(res.Body)
-		return nil, fmt.Errorf("can't create new website. %s", string(payload))
+		return nil, fmt.Errorf("status code: %d; payload: %s", res.StatusCode, string(payload))
 	}
 
 	return NewTwiplaJSON[Website](res.Body).Unmarshal()
@@ -73,7 +73,7 @@ func (t *TwiplaWebsiteAPI) List(pag PagArgs) (*[]Website, error) {
 
 	if res.StatusCode != http.StatusOK {
 		payload, _ := io.ReadAll(res.Body)
-		return nil, fmt.Errorf("can't get intp websites. %s", string(payload))
+		return nil, fmt.Errorf("status code: %d; payload: %s", res.StatusCode, string(payload))
 	}
 
 	return NewTwiplaJSON[[]Website](res.Body).Unmarshal()
@@ -114,11 +114,8 @@ func (t *TwiplaWebsiteAPI) GetByIntID(ID string) (*Website, error) {
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusOK {
-		if res.StatusCode == http.StatusNotFound {
-			return nil, fmt.Errorf("can't get intp website. not found")
-		}
 		payload, _ := io.ReadAll(res.Body)
-		return nil, fmt.Errorf("can't get intp website. %s", string(payload))
+		return nil, fmt.Errorf("status code: %d; payload: %s", res.StatusCode, string(payload))
 	}
 
 	return NewTwiplaJSON[Website](res.Body).Unmarshal()
