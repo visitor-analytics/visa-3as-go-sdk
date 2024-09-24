@@ -92,15 +92,19 @@ func (t *TwiplaWebsiteAPI) GetByID(ID string) (*Website, error) {
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != http.StatusOK {
-		if res.StatusCode == http.StatusNotFound {
-			return nil, &NotFoundError{Resource: fmt.Sprintf("3as website by external id: %s", ID)}
-		}
-		payload, _ := io.ReadAll(res.Body)
-		return nil, fmt.Errorf("status code: %d; payload: %s", res.StatusCode, string(payload))
+	if res.StatusCode == http.StatusOK {
+		return NewTwiplaJSON[Website](res.Body).Unmarshal()
 	}
 
-	return NewTwiplaJSON[Website](res.Body).Unmarshal()
+	if res.StatusCode == http.StatusNotFound {
+		return nil, &NotFoundError{
+			Resource: fmt.Sprintf("3as external id: %s", ID),
+			Err:      WebsiteNotFoundError,
+		}
+	}
+
+	payload, _ := io.ReadAll(res.Body)
+	return nil, fmt.Errorf("status code: %d; payload: %s", res.StatusCode, string(payload))
 }
 
 func (t *TwiplaWebsiteAPI) GetByIntID(ID string) (*Website, error) {
@@ -116,15 +120,19 @@ func (t *TwiplaWebsiteAPI) GetByIntID(ID string) (*Website, error) {
 	}
 	defer res.Body.Close()
 
-	if res.StatusCode != http.StatusOK {
-		if res.StatusCode == http.StatusNotFound {
-			return nil, &NotFoundError{Resource: fmt.Sprintf("3as website by internal id: %s", ID)}
-		}
-		payload, _ := io.ReadAll(res.Body)
-		return nil, fmt.Errorf("status code: %d; payload: %s", res.StatusCode, string(payload))
+	if res.StatusCode == http.StatusOK {
+		return NewTwiplaJSON[Website](res.Body).Unmarshal()
 	}
 
-	return NewTwiplaJSON[Website](res.Body).Unmarshal()
+	if res.StatusCode == http.StatusNotFound {
+		return nil, &NotFoundError{
+			Resource: fmt.Sprintf("3as internal id: %s", ID),
+			Err:      WebsiteNotFoundError,
+		}
+	}
+
+	payload, _ := io.ReadAll(res.Body)
+	return nil, fmt.Errorf("status code: %d; payload: %s", res.StatusCode, string(payload))
 }
 
 func NewTwiplaWebsiteAPI(
