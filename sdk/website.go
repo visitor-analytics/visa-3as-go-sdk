@@ -98,7 +98,7 @@ func (t *TwiplaWebsiteAPI) GetByID(ID string) (*Website, error) {
 
 	if res.StatusCode == http.StatusNotFound {
 		return nil, &NotFoundError{
-			Resource: fmt.Sprintf("3as internal id: %s", ID),
+			Resource: fmt.Sprintf("3as external id: %s", ID),
 			Err:      WebsiteNotFoundError,
 		}
 	}
