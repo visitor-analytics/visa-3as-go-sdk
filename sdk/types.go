@@ -1,9 +1,10 @@
 package sdk
 
 type NewWebsiteArgs struct {
-	ExtID     string `json:"intpWebsiteId"`
-	Domain    string `json:"domain"`
-	PackageID string `json:"packageId"`
+	ExtID       string  `json:"intpWebsiteId"`
+	Domain      string  `json:"domain"`
+	PackageID   string  `json:"packageId"`
+	BillingDate *string `json:"billingDate,omitempty"`
 }
 
 type NewSSRWebsiteArgs struct {
