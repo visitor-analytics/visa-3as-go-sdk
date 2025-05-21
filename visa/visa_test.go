@@ -21,7 +21,7 @@ func ExampleTwiplaSDK_GenerateIframeURL() {
 		log.Fatal(err)
 	}
 
-	// Generate the dashboard URL for specific intpc ()
+	// Generate the dashboard URL for specific intpc and website ID (your internal IDs)
 	url, err := sdk.GenerateIframeURL("first_test_01", "first_test_01_website_01")
 	if err != nil {
 		log.Fatal(err)

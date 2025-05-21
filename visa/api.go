@@ -77,8 +77,8 @@ func NewSDK(config *TwiplaConfig) (*TwiplaSDK, error) {
 	case TwiplaEnvStage:
 		apiPrefix = "https://stage-api-gateway.va-endpoint.com"
 	default:
-	case TwiplaEnvProduction:
 		apiPrefix = "https://api-gateway.visitor-analytics.io"
+		config.Environment = TwiplaEnvProduction
 	}
 
 	apiURL, err := url.Parse(apiPrefix)
