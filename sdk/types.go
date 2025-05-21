@@ -65,8 +65,11 @@ type Website struct {
 }
 
 type Subscription struct {
+	PackageID string `json:"packageId"`
+	// For website subscriptions
 	WebsiteExtID string `json:"intpWebsiteId"`
-	PackageID    string `json:"packageId"`
+	// For INTPC subscriptions
+	IntpcID string `json:"intpcId"`
 }
 
 type UpgradeArgs struct {
@@ -85,6 +88,24 @@ type ReactivateArgs struct {
 type DowngradeArgs struct {
 	WebsiteExtID string `json:"intpWebsiteId"`
 	PackageID    string `json:"packageId"`
+}
+
+type UpgradeIntpcArgs struct {
+	IntpcID   string `json:"intpcId"`
+	PackageID string `json:"packageId"`
+	Trial     bool   `json:"trial"`
+	ProRate   bool   `json:"proRate"`
+}
+
+type ReactivateIntpcArgs struct {
+	IntpcID   string `json:"intpcId"`
+	PackageID string `json:"packageId"`
+	Trial     bool   `json:"trial"`
+}
+
+type DowngradeIntpcArgs struct {
+	IntpcID   string `json:"intpcId"`
+	PackageID string `json:"packageId"`
 }
 
 type APIErr struct {

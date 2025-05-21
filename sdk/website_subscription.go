@@ -18,7 +18,7 @@ func (t *TwiplaSubscriptionAPI) Upgrade(args UpgradeArgs) error {
 		return err
 	}
 
-	url := t.client.apiGateway + "/v2/3as/notifications/subscriptions/upgrade"
+	url := t.client.apiGateway + "/v3/3as/website-subscriptions/upgrade"
 	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
@@ -44,7 +44,7 @@ func (t *TwiplaSubscriptionAPI) Downgrade(args DowngradeArgs) error {
 		return err
 	}
 
-	url := t.client.apiGateway + "/v2/3as/notifications/subscriptions/downgrade"
+	url := t.client.apiGateway + "/v3/3as/website-subscriptions/downgrade"
 	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
@@ -75,7 +75,7 @@ func (t *TwiplaSubscriptionAPI) Cancel(websiteExtID string) error {
 		return err
 	}
 
-	url := t.client.apiGateway + "/v2/3as/notifications/subscriptions/cancel"
+	url := t.client.apiGateway + "/v3/3as/website-subscriptions/cancel"
 	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
@@ -106,7 +106,7 @@ func (t *TwiplaSubscriptionAPI) Resume(websiteExtID string) error {
 		return err
 	}
 
-	url := t.client.apiGateway + "/v2/3as/notifications/subscriptions/resume"
+	url := t.client.apiGateway + "/v3/3as/website-subscriptions/resume"
 	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
@@ -137,7 +137,7 @@ func (t *TwiplaSubscriptionAPI) Deactivate(websiteExtID string) error {
 		return err
 	}
 
-	url := t.client.apiGateway + "/v2/3as/notifications/subscriptions/deactivate"
+	url := t.client.apiGateway + "/v3/3as/website-subscriptions/deactivate"
 	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
@@ -163,7 +163,7 @@ func (t *TwiplaSubscriptionAPI) Reactivate(args ReactivateArgs) error {
 		return err
 	}
 
-	url := t.client.apiGateway + "/v2/3as/notifications/subscriptions/reactivate"
+	url := t.client.apiGateway + "/v3/3as/website-subscriptions/reactivate"
 	r, err := t.client.NewRequest(http.MethodPost, url, bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
