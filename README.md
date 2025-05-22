@@ -1,5 +1,7 @@
 # TWIPLA 3AS Go SDK
 
+# NOTE: This repository is being retired. Please use [the new Go SDK](https://github.com/twipla/3as-go-sdk) instead.
+
 [![GoDoc](https://pkg.go.dev/badge/github.com/visitor-analytics/visa-3as-go-sdk)](https://pkg.go.dev/github.com/visitor-analytics/visa-3as-go-sdk)
 
 A simple API wrapper for integrating the Analysis as a Service (3AS) APIs provided by TWIPLA
